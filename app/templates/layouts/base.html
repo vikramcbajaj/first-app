@@ -23,7 +23,7 @@ Coded by www.creative-tim.com
   <link rel="canonical" href="https://appseed.us/admin-dashboards/flask-dashboard-paper-pro"/>
 
   <title>
-    Jinja Paper Dashboard - {% block title %}{% endblock %} | AppSeed
+    Dashboard - {% block title %}{% endblock %} 
   </title>
   
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
@@ -35,18 +35,15 @@ Coded by www.creative-tim.com
   <link href="/static/assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
   
   <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link href="/static/assets/demo/demo.css" rel="stylesheet" />
+  <!--<link href="/static/assets/demo/demo.css" rel="stylesheet" /> -->
 
   {% block stylesheets %}{% endblock stylesheets %}
 
 </head>
 
 <body class="">
-  <div class="wrapper ">
 
-    {% include 'includes/sidebar.html' %}
-
-    <div class="main-panel">
+    <div class="main-panel">       
 
       {% include 'includes/navigation.html' %}
 
@@ -55,7 +52,6 @@ Coded by www.creative-tim.com
       {% include 'includes/footer.html' %}
 
     </div>
-  </div>
 
   {% include 'includes/scripts.html' %}
 

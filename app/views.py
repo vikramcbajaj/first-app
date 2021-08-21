@@ -11,10 +11,29 @@ from jinja2  import TemplateNotFound
 from app import app
 
 # App main route + generic routing
-@app.route('/', defaults={'path': 'index.html'})
-@app.route('/<path>')
-def index(path):
+@app.route('/')
+def index():
+    try:
+        daily = get_daily_data()
+        return render_template( 'index.html', daily=daily)
+    except exception(e):
+        print(e)
+        return
 
+def get_daily_data():
+    daily = {}
+    daily['new_users']=900
+    daily['user_logins']=5000
+    daily['new_deployments']=1200
+    daily['new_strategies']=125
+    return daily
+
+
+   
+'''
+@app.route('/sales')
+def sales(path):
+    
     try:
 
         # Detect the current page
@@ -39,3 +58,5 @@ def get_segment( request ):
 
     except:
         return None  
+   
+'''

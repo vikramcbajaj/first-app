@@ -10,6 +10,7 @@ from jinja2  import TemplateNotFound
 # App modules
 from app import app
 import dash_inputs
+import json
 
 # App main route + generic routing
 @app.route('/')
@@ -32,21 +33,21 @@ def get_daily_data():
 
 
    
-'''
+
 @app.route('/sales')
-def sales(path):
+def sales():
     
     try:
 
         # Detect the current page
-        segment = get_segment( request )
+        inv_data = dash_inputs.chart_data(dash_inputs.sample_inv(),'invoice_type','amount')
 
         # Serve the file (if exists) from app/templates/FILE.html
-        return render_template( path, segment=segment )
+        return json.dumps(inv_data)
     
     except TemplateNotFound:
         return render_template('page-404.html'), 404
-
+'''
 def get_segment( request ): 
 
     try:

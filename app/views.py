@@ -9,13 +9,15 @@ from jinja2  import TemplateNotFound
 
 # App modules
 from app import app
+import dash_inputs
 
 # App main route + generic routing
 @app.route('/')
 def index():
     try:
         daily = get_daily_data()
-        return render_template( 'index.html', daily=daily)
+        inv_data = dash_inputs.chart_data(dash_inputs.sample_inv(),'invoice_type','amount')
+        return render_template( 'index.html', daily=daily,inv_data=inv_data)
     except exception(e):
         print(e)
         return

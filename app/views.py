@@ -6,7 +6,7 @@ Copyright (c) 2019 - present AppSeed.us
 # Flask modules
 from flask   import render_template, request
 from jinja2  import TemplateNotFound
-
+import pandas as pd
 # App modules
 from app import app
 import dash_inputs
@@ -47,19 +47,66 @@ def sales():
     
     except TemplateNotFound:
         return render_template('page-404.html'), 404
-'''
-def get_segment( request ): 
 
-    try:
+@app.route('/users')
+def users():
+    df=pd.read_csv('app/dash_data/active_subs.csv')
+    df_plan_wise = df.groupby(['exchange','name']).agg({'users':'sum'}).reset_index()
+    datasets = []
+    plans= ['Starter','Retail','Retail+','Creator','Creator+']
+    colours = ['#FF4500','#D2691E','#00BFFF','#66CDAA','#FFA500']
+    counter = 0
+    ds=[]
+    for i in list(df['exchange'].unique()):
+        points=[]
+        for j in plans:    
+            points.append(str(df[(df['exchange']==i) & (df['name']==j)].users.sum()))
+        ds.append({'label':i,
+        'data': points,
+        'backgroundColor': colours[counter]})
+        counter+=1
+    users = {'labels':plans,
+             'datasets': ds} 
+    datasets = []
+    plan_types= ['Monthly','Quarterly','Yearly']
+    colours = ['#00BFFF','#66CDAA','#FFA500','#FF4500','#D2691E']
+    counter = 0
+    ds2=[]
+    for i in plans:
+        points=[]
+        for j in plan_types:    
+            points.append(str(df[(df['name']==i) & (df['sub_type']==j)].users.sum()))
+        ds2.append({'label':i,
+        'data': points,
+        'backgroundColor': colours[counter]})
+        counter+=1
+    sub_type = {'labels':plan_types,
+             'datasets': ds2} 
 
-        segment = request.path.split('/')[-1]
+    users_data = {'users':users,
+                 'sub_type':sub_type}
+    return json.dumps(users_data)
 
-        if segment == '':
-            segment = 'index'
 
-        return segment    
+@app.route('/creators')
+def creators():
+    df = pd.read_pickle('dash_data/pm_invoices.pkl')
+    
+    return df
 
-    except:
-        return None  
-   
-'''
+
+@app.route('/sales_data')
+def sales_data():
+    df = pd.read_pickle('dash_data/sales_data.pkl')
+    return df
+
+
+@app.route('/deployments')
+def deployments():
+    df = pd.read_pickle('dash_data/strats_report.pkl')
+    return df
+
+
+
+
+    
